@@ -1,4 +1,4 @@
-# python-data-engineer-intern-recruitment-test
+# Python Developer / Data Engineer Intern recruitment test
 This is test recruitment task for intern candidate for Python Developer or Data Engineer position.
 
 0. Fork this repository.
