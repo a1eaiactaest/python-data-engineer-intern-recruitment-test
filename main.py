@@ -4,7 +4,6 @@ import pandas as pd
 import pathlib
 from typing import List 
 from collections import OrderedDict
-import math
 
 from links import *
 from fetch import fetch
@@ -17,9 +16,9 @@ def merge(frames: List[pd.DataFrame]) -> pd.DataFrame:
 
   return pd.concat(frames, axis=1, join='inner') 
 
-def save_frame(file_name: str, frame: pd.DataFrame, index=True) -> None:
+def save_frame(file_name: str, frame: pd.DataFrame, **kwargs) -> None:
   pathlib.Path("./output/").mkdir(parents=True, exist_ok=True)
-  frame.to_csv(f"./output/{file_name}", sep='\t', index=index)
+  frame.to_csv(f"./output/{file_name}", sep='\t', **kwargs)
 
 def extract(source_frame: pd.DataFrame, column: str, col_type: str) -> pd.DataFrame:
   return source_frame[source_frame[column] == col_type]
@@ -39,10 +38,15 @@ def average_rating_type(source_frame: pd.DataFrame, column: str, sort=False) -> 
   for genre, ratings in d.items():
     ret[genre] = round(sum(ratings)/len(ratings), 2)
 
+
   if sort:
-    return pd.DataFrame.from_dict(OrderedDict(sorted(ret.items())), orient='index')
+    full_dict = OrderedDict(sorted(ret.items()))
   else:
-    return pd.DataFrame.from_dict(ret, orient='index')
+    full_dict = {column: list(ret.keys()), 'average rating': list(ret.values())}
+
+  print(full_dict)
+
+  return pd.DataFrame(full_dict)
 
 
 def main() -> None:
@@ -61,10 +65,10 @@ def main() -> None:
   save_frame('movies.tsv', only_movies_frame)
 
   average_rating_genre_table = average_rating_type(all_videos_frame, 'genres')
-  save_frame('movie_rating_by_genres.tsv', average_rating_genre_table)
+  save_frame('movie_rating_by_genres.tsv', average_rating_genre_table, index_label=None)
 
-  average_rating_year_table = average_rating_type(all_videos_frame, 'startYear', sort=True)
-  save_frame('movie_rating_by_year.tsv', average_rating_year_table)
+  average_rating_year_table = average_rating_type(all_videos_frame, 'startYear')
+  save_frame('movie_rating_by_year.tsv', average_rating_year_table, index_label=None)
   
 if __name__ == "__main__":
   main()
