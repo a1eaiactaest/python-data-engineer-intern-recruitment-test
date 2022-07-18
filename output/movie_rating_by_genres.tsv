@@ -1,29 +1,29 @@
-	0
-Documentary	7.24
-Short	6.8
-Animation	7.11
-Comedy	6.96
-Romance	6.84
-Sport	6.98
-News	6.64
-Drama	7.02
-Fantasy	7.08
-Horror	6.1
-Biography	7.17
-Music	6.99
-War	7.01
-Crime	7.14
-Western	7.02
-Family	7.08
-Adventure	7.11
-Action	7.0
-History	7.33
-Mystery	7.12
-Sci-Fi	6.69
-Musical	6.61
-Thriller	6.35
-Film-Noir	6.52
-Game-Show	6.97
-Talk-Show	6.68
-Reality-TV	6.9
-Adult	6.33
+	genres	average rating
+0	Documentary	7.24
+1	Short	6.8
+2	Animation	7.11
+3	Comedy	6.96
+4	Romance	6.84
+5	Sport	6.98
+6	News	6.64
+7	Drama	7.02
+8	Fantasy	7.08
+9	Horror	6.1
+10	Biography	7.18
+11	Music	6.99
+12	War	7.01
+13	Crime	7.14
+14	Western	7.02
+15	Family	7.08
+16	Adventure	7.11
+17	Action	7.0
+18	History	7.33
+19	Mystery	7.12
+20	Sci-Fi	6.7
+21	Musical	6.61
+22	Thriller	6.35
+23	Film-Noir	6.52
+24	Game-Show	6.97
+25	Talk-Show	6.68
+26	Reality-TV	6.9
+27	Adult	6.33
