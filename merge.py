@@ -63,5 +63,8 @@ def main() -> None:
   average_rating_genre_table = average_rating_type(all_videos_frame, 'genres')
   save_frame('movie_rating_by_genres.tsv', average_rating_genre_table)
 
+  average_rating_year_table = average_rating_type(all_videos_frame, 'startYear', sort=True)
+  save_frame('movie_rating_by_year.tsv', average_rating_year_table)
+  
 if __name__ == "__main__":
   main()
