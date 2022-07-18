@@ -3,6 +3,8 @@
 import pandas as pd
 import pathlib
 from typing import List 
+from collections import OrderedDict
+import math
 
 from links import *
 from fetch import fetch
@@ -15,12 +17,33 @@ def merge(frames: List[pd.DataFrame]) -> pd.DataFrame:
 
   return pd.concat(frames, axis=1, join='inner') 
 
-def save_frame(file_name: str, frame: pd.DataFrame) -> None:
+def save_frame(file_name: str, frame: pd.DataFrame, index=True) -> None:
   pathlib.Path("./output/").mkdir(parents=True, exist_ok=True)
-  frame.to_csv(f"./output/{file_name}", sep='\t')
+  frame.to_csv(f"./output/{file_name}", sep='\t', index=index)
 
 def extract(source_frame: pd.DataFrame, column: str, col_type: str) -> pd.DataFrame:
   return source_frame[source_frame[column] == col_type]
+
+def average_rating_type(source_frame: pd.DataFrame, column: str, sort=False) -> pd.DataFrame:
+  d = {}
+
+  filter_values = zip(source_frame[column].to_list(), source_frame['averageRating'].to_list())
+  for genres, rating in filter_values:
+    if pd.notnull(genres) and genres != '\\N':
+      for genre in genres.split(","):
+        if genre not in d:
+          d[f"{genre}"] = []
+        d[f"{genre}"].append(rating)
+    
+  ret = {}
+  for genre, ratings in d.items():
+    ret[genre] = round(sum(ratings)/len(ratings), 2)
+
+  if sort:
+    return pd.DataFrame.from_dict(OrderedDict(sorted(ret.items())), orient='index')
+  else:
+    return pd.DataFrame.from_dict(ret, orient='index')
+
 
 def main() -> None:
   title_basics_file_path = fetch(Links.title_basics)
@@ -36,6 +59,9 @@ def main() -> None:
 
   only_movies_frame = extract(all_videos_frame, 'titleType', 'movie')
   save_frame('movies.tsv', only_movies_frame)
+
+  average_rating_genre_table = average_rating_type(all_videos_frame, 'genres')
+  save_frame('movie_rating_by_genres.tsv', average_rating_genre_table)
 
 if __name__ == "__main__":
   main()
